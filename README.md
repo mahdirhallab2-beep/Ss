@@ -1,1542 +1,1257 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="fr" dir="ltr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>حقيبة مهندس الكهرباء - تطبيق أدوات كهربائية متكامل</title>
+    <title>Calculateur de Moteur Électrique | حاسبة المحركات الكهربائية | Motor Calculator</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        :root {
-            --primary: #2c3e50;
-            --secondary: #3498db;
-            --accent: #e74c3c;
-            --success: #27ae60;
-            --warning: #f39c12;
-            --light: #ecf0f1;
-            --dark: #2c3e50;
-            --gray: #7f8c8d;
-            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            --radius: 10px;
-        }
-        
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-        
+
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --accent-color: #e74c3c;
+            --light-color: #ecf0f1;
+            --dark-color: #2c3e50;
+            --success-color: #2ecc71;
+            --warning-color: #f39c12;
+            --border-radius: 8px;
+            --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
         body {
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-            color: var(--dark);
+            background-color: #f5f7fa;
+            color: #333;
             line-height: 1.6;
-            min-height: 100vh;
+            transition: all 0.3s ease;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
             padding: 20px;
         }
-        
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-        
+
+        /* Header Styles */
         header {
-            text-align: center;
-            padding: 25px 20px;
-            background: white;
-            border-radius: var(--radius);
-            box-shadow: var(--shadow);
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 20px 0;
+            border-radius: var(--border-radius);
             margin-bottom: 30px;
-            border-bottom: 5px solid var(--secondary);
+            box-shadow: var(--box-shadow);
         }
-        
-        header h1 {
-            color: var(--primary);
-            margin-bottom: 10px;
-            font-size: 2.5rem;
-        }
-        
-        header p {
-            color: var(--gray);
-            font-size: 1.1rem;
-            max-width: 800px;
-            margin: 0 auto;
-        }
-        
-        .app-icon {
-            font-size: 2.5rem;
-            color: var(--secondary);
-            margin-bottom: 15px;
-        }
-        
-        .tabs {
+
+        .header-content {
             display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 10px;
-            margin-bottom: 30px;
-            background: white;
-            padding: 15px;
-            border-radius: var(--radius);
-            box-shadow: var(--shadow);
-        }
-        
-        .tab {
-            padding: 12px 25px;
-            background: var(--light);
-            border: none;
-            border-radius: 50px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            display: flex;
+            justify-content: space-between;
             align-items: center;
-            gap: 8px;
-            font-size: 1rem;
+            padding: 0 20px;
         }
-        
-        .tab:hover {
-            background: var(--secondary);
-            color: white;
-            transform: translateY(-3px);
-        }
-        
-        .tab.active {
-            background: var(--secondary);
-            color: white;
-            box-shadow: 0 4px 8px rgba(52, 152, 219, 0.3);
-        }
-        
-        .tab i {
-            font-size: 1.2rem;
-        }
-        
-        .tool-container {
-            display: none;
-            background: white;
-            border-radius: var(--radius);
-            box-shadow: var(--shadow);
-            padding: 30px;
-            margin-bottom: 30px;
-            animation: fadeIn 0.5s ease;
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        .tool-container.active {
-            display: block;
-        }
-        
-        .tool-header {
+
+        .logo {
             display: flex;
             align-items: center;
             gap: 15px;
-            margin-bottom: 25px;
-            padding-bottom: 15px;
-            border-bottom: 2px solid var(--light);
         }
-        
-        .tool-header i {
-            font-size: 2rem;
-            color: var(--secondary);
-            background: rgba(52, 152, 219, 0.1);
-            padding: 15px;
-            border-radius: 50%;
+
+        .logo i {
+            font-size: 2.5rem;
+            color: #fff;
         }
-        
-        .tool-header h2 {
-            color: var(--primary);
+
+        .logo h1 {
             font-size: 1.8rem;
+            font-weight: 700;
         }
-        
-        .input-group {
-            margin-bottom: 25px;
-        }
-        
-        .input-row {
+
+        /* Language Selector */
+        .language-selector {
             display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
+            gap: 10px;
+        }
+
+        .lang-btn {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 600;
+        }
+
+        .lang-btn.active {
+            background: white;
+            color: var(--primary-color);
+        }
+
+        .lang-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        /* Main Content */
+        .app-description {
+            background-color: white;
+            padding: 20px;
+            border-radius: var(--border-radius);
+            margin-bottom: 25px;
+            box-shadow: var(--box-shadow);
+            text-align: center;
+            border-left: 5px solid var(--secondary-color);
+        }
+
+        .app-description h2 {
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+
+        .app-description p {
+            color: #555;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Input and Output Sections */
+        .section {
+            background-color: white;
+            border-radius: var(--border-radius);
+            padding: 25px;
+            box-shadow: var(--box-shadow);
+            height: fit-content;
+        }
+
+        .section-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--light-color);
+            color: var(--primary-color);
+        }
+
+        .section-title i {
+            color: var(--secondary-color);
+        }
+
+        .section-title h3 {
+            font-size: 1.4rem;
+        }
+
+        /* Input Groups */
+        .input-group {
             margin-bottom: 20px;
         }
-        
-        .input-container {
-            flex: 1;
-            min-width: 250px;
-        }
-        
-        label {
+
+        .input-group label {
             display: block;
             margin-bottom: 8px;
             font-weight: 600;
-            color: var(--dark);
-            font-size: 1.1rem;
+            color: var(--dark-color);
         }
-        
-        input, select {
+
+        .input-group input, 
+        .input-group select {
             width: 100%;
-            padding: 15px;
-            border: 2px solid #ddd;
-            border-radius: var(--radius);
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
             font-size: 1rem;
             transition: border 0.3s;
         }
-        
-        input:focus, select:focus {
+
+        .input-group input:focus, 
+        .input-group select:focus {
+            border-color: var(--secondary-color);
             outline: none;
-            border-color: var(--secondary);
         }
-        
-        .unit {
-            position: relative;
+
+        .unit-selector {
+            display: flex;
+            margin-bottom: 10px;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            width: fit-content;
         }
-        
-        .unit input {
-            padding-right: 60px;
+
+        .unit-btn {
+            padding: 8px 15px;
+            background-color: #f1f1f1;
+            border: 1px solid #ddd;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
         }
-        
-        .unit::after {
-            content: attr(data-unit);
-            position: absolute;
-            right: 15px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--gray);
+
+        .unit-btn.active {
+            background-color: var(--secondary-color);
+            color: white;
+            border-color: var(--secondary-color);
+        }
+
+        .unit-btn:first-child {
+            border-radius: var(--border-radius) 0 0 var(--border-radius);
+        }
+
+        .unit-btn:last-child {
+            border-radius: 0 var(--border-radius) var(--border-radius) 0;
+        }
+
+        .input-with-unit {
+            display: flex;
+            align-items: center;
+        }
+
+        .input-with-unit input {
+            flex: 1;
+            border-radius: var(--border-radius) 0 0 var(--border-radius);
+        }
+
+        .unit-display {
+            background-color: #f1f1f1;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-left: none;
+            border-radius: 0 var(--border-radius) var(--border-radius) 0;
+            font-weight: 600;
+            min-width: 60px;
+            text-align: center;
+        }
+
+        /* Results */
+        .result-item {
+            background-color: #f9f9f9;
+            padding: 15px;
+            border-radius: var(--border-radius);
+            margin-bottom: 15px;
+            border-left: 4px solid var(--secondary-color);
+        }
+
+        .result-title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 5px;
+        }
+
+        .result-title h4 {
+            font-size: 1.1rem;
+            color: var(--primary-color);
+        }
+
+        .result-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--secondary-color);
+            text-align: right;
+        }
+
+        .result-unit {
+            font-size: 0.9rem;
+            color: #777;
             font-weight: 600;
         }
-        
+
+        .result-note {
+            font-size: 0.85rem;
+            color: #666;
+            margin-top: 5px;
+            font-style: italic;
+        }
+
+        /* Special Features */
+        .features-section {
+            grid-column: 1 / -1;
+            margin-top: 20px;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .feature-card {
+            background-color: white;
+            border-radius: var(--border-radius);
+            padding: 20px;
+            box-shadow: var(--box-shadow);
+            transition: transform 0.3s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .feature-card h4 {
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .feature-card h4 i {
+            color: var(--accent-color);
+        }
+
+        /* Buttons */
         .calculate-btn {
-            background: var(--success);
+            background: linear-gradient(to right, var(--secondary-color), #2980b9);
             color: white;
             border: none;
             padding: 15px 30px;
-            border-radius: var(--radius);
             font-size: 1.1rem;
             font-weight: 600;
+            border-radius: var(--border-radius);
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.3s;
+            width: 100%;
+            margin-top: 10px;
             display: flex;
+            justify-content: center;
             align-items: center;
             gap: 10px;
-            margin: 25px auto;
         }
-        
+
         .calculate-btn:hover {
-            background: #219653;
-            transform: translateY(-3px);
-            box-shadow: 0 6px 12px rgba(39, 174, 96, 0.3);
+            background: linear-gradient(to right, #2980b9, var(--secondary-color));
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
         }
-        
-        .results {
-            background: var(--light);
-            border-radius: var(--radius);
-            padding: 25px;
-            margin-top: 30px;
-            border-right: 5px solid var(--secondary);
-        }
-        
-        .results h3 {
-            color: var(--primary);
-            margin-bottom: 20px;
-            font-size: 1.5rem;
+
+        .action-buttons {
             display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .result-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 20px;
-        }
-        
-        .result-card {
-            background: white;
-            padding: 20px;
-            border-radius: var(--radius);
-            box-shadow: 0 3px 5px rgba(0,0,0,0.05);
-        }
-        
-        .result-card h4 {
-            color: var(--gray);
-            font-size: 1rem;
-            margin-bottom: 10px;
-        }
-        
-        .result-value {
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: var(--secondary);
-        }
-        
-        .result-unit {
-            font-size: 1rem;
-            color: var(--gray);
-            margin-left: 5px;
-        }
-        
-        .notes {
-            background: #fff8e1;
-            border-right: 5px solid var(--warning);
-            padding: 20px;
-            border-radius: var(--radius);
+            gap: 15px;
             margin-top: 25px;
         }
-        
-        .notes h4 {
-            color: var(--warning);
-            margin-bottom: 10px;
+
+        .action-btn {
+            flex: 1;
+            padding: 12px;
+            border-radius: var(--border-radius);
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
             display: flex;
+            justify-content: center;
             align-items: center;
             gap: 10px;
         }
-        
-        .notes ul {
-            padding-right: 20px;
-        }
-        
-        .notes li {
-            margin-bottom: 8px;
-        }
-        
-        .motor-db {
-            overflow-x: auto;
-            margin-top: 30px;
-        }
-        
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 15px;
-        }
-        
-        th {
-            background: var(--primary);
+
+        .export-btn {
+            background-color: var(--success-color);
             color: white;
-            padding: 15px;
-            text-align: right;
         }
-        
-        td {
-            padding: 15px;
-            border-bottom: 1px solid #ddd;
-            text-align: right;
+
+        .export-btn:hover {
+            background-color: #27ae60;
         }
-        
-        tr:nth-child(even) {
-            background: #f9f9f9;
+
+        .reset-btn {
+            background-color: var(--warning-color);
+            color: white;
         }
-        
-        tr:hover {
-            background: #e3f2fd;
+
+        .reset-btn:hover {
+            background-color: #e67e22;
         }
-        
-        .cable-table {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 15px;
-            margin-top: 20px;
-        }
-        
-        .cable-item {
-            background: white;
-            border-radius: var(--radius);
-            padding: 15px;
-            box-shadow: 0 3px 5px rgba(0,0,0,0.05);
-            border-top: 4px solid var(--secondary);
-        }
-        
-        .cable-size {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--primary);
-            margin-bottom: 5px;
-        }
-        
-        .cable-amp {
-            color: var(--success);
-            font-weight: 600;
-        }
-        
-        .footer {
+
+        /* Connection Diagram */
+        .diagram-container {
+            background-color: white;
+            border-radius: var(--border-radius);
+            padding: 20px;
+            margin-top: 30px;
+            box-shadow: var(--box-shadow);
             text-align: center;
-            padding: 25px;
+        }
+
+        .diagram-title {
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .diagram {
+            width: 100%;
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: var(--border-radius);
+        }
+
+        .motor-terminal {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--accent-color);
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
             margin-top: 40px;
-            color: var(--gray);
+            padding: 20px;
+            color: #666;
+            font-size: 0.9rem;
             border-top: 1px solid #ddd;
         }
-        
-        .footer a {
-            color: var(--secondary);
-            text-decoration: none;
+
+        .highlight {
+            color: var(--secondary-color);
+            font-weight: 600;
         }
-        
-        .footer a:hover {
-            text-decoration: underline;
-        }
-        
+
+        /* Responsive adjustments */
         @media (max-width: 768px) {
-            .input-row {
+            .header-content {
                 flex-direction: column;
+                gap: 15px;
+                text-align: center;
             }
             
-            .input-container {
-                min-width: 100%;
-            }
-            
-            .result-grid {
+            .features-grid {
                 grid-template-columns: 1fr;
             }
             
-            header h1 {
-                font-size: 2rem;
-            }
-            
-            .tab {
-                padding: 10px 15px;
-                font-size: 0.9rem;
+            .action-buttons {
+                flex-direction: column;
             }
         }
-        
-        /* تحسينات إضافية */
-        .highlight {
-            background: linear-gradient(120deg, #a1c4fd 0%, #c2e9fb 100%);
-            padding: 20px;
-            border-radius: var(--radius);
-            margin: 20px 0;
-            border-right: 5px solid var(--secondary);
+
+        /* Animation for results */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
-        
-        .formula-box {
-            background: #f8f9fa;
-            padding: 15px;
-            border-radius: var(--radius);
-            font-family: 'Courier New', monospace;
-            margin: 15px 0;
-            border-right: 3px solid var(--accent);
-        }
-        
-        .recommendation {
-            background: #e8f5e9;
-            padding: 15px;
-            border-radius: var(--radius);
-            margin-top: 20px;
-            border-right: 4px solid var(--success);
-        }
-        
-        .warning-box {
-            background: #ffebee;
-            padding: 15px;
-            border-radius: var(--radius);
-            margin-top: 20px;
-            border-right: 4px solid var(--accent);
+
+        .result-item {
+            animation: fadeIn 0.5s ease-out;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <header>
-            <div class="app-icon">
-                <i class="fas fa-bolt"></i>
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-cogs"></i>
+                    <h1 id="app-title">Calculateur de Moteur Électrique</h1>
+                </div>
+                <div class="language-selector">
+                    <button class="lang-btn active" data-lang="fr">FR</button>
+                    <button class="lang-btn" data-lang="ar">العربية</button>
+                    <button class="lang-btn" data-lang="en">EN</button>
+                </div>
             </div>
-            <h1>حقيبة مهندس الكهرباء</h1>
-            <p>تطبيق شامل يحتوي على جميع الأدوات العملية لمهندسي الكهرباء والمهندسين الكهربائيين</p>
         </header>
-        
-        <div class="tabs">
-            <button class="tab active" data-tool="cable">
-                <i class="fas fa-bolt"></i> حساب مقطع الكابل
-            </button>
-            <button class="tab" data-tool="current">
-                <i class="fas fa-tachometer-alt"></i> حساب التيار والقدرة
-            </button>
-            <button class="tab" data-tool="ohm">
-                <i class="fas fa-resistance"></i> قانون أوم والدوائر
-            </button>
-            <button class="tab" data-tool="power">
-                <i class="fas fa-charging-station"></i> معامل القدرة والمكثفات
-            </button>
-            <button class="tab" data-tool="motor">
-                <i class="fas fa-cogs"></i> حساب محرك 3 فاز
-            </button>
-            <button class="tab" data-tool="voltage">
-                <i class="fas fa-bolt"></i> حساب هبوط الجهد
-            </button>
-            <button class="tab" data-tool="transformer">
-                <i class="fas fa-transformer"></i> حساب المحولات
-            </button>
-            <button class="tab" data-tool="protection">
-                <i class="fas fa-shield-alt"></i> حمايات الدوائر
-            </button>
+
+        <div class="app-description">
+            <h2 id="description-title">Calculateur professionnel pour la sélection des composants de commande de moteur</h2>
+            <p id="description-text">Cet outil calcule les paramètres électriques, les courants de démarrage et sélectionne les composants appropriés (disjoncteurs, contacteurs, relais de surcharge) en fonction des données de la plaque signalétique du moteur et des conditions de fonctionnement.</p>
         </div>
-        
-        <!-- أداة حساب مقطع الكابل -->
-        <div id="cable" class="tool-container active">
-            <div class="tool-header">
-                <i class="fas fa-bolt"></i>
-                <div>
-                    <h2>حساب مقطع الكابل الكهربائي</h2>
-                    <p>احسب المقطع العرضي المناسب للكابل بناءً على التيار والمسافة ونوع التمديد</p>
+
+        <div class="main-content">
+            <!-- Input Section -->
+            <section class="section">
+                <div class="section-title">
+                    <i class="fas fa-keyboard"></i>
+                    <h3 id="input-title">Données d'entrée</h3>
                 </div>
-            </div>
-            
-            <div class="input-row">
-                <div class="input-container">
-                    <label for="cable-current"><i class="fas fa-tachometer-alt"></i> التيار (أمبير)</label>
-                    <div class="unit" data-unit="A">
-                        <input type="number" id="cable-current" placeholder="مثال: 25" min="1" value="25">
+
+                <!-- Motor Nameplate Data -->
+                <h4 id="nameplate-title" style="margin-bottom: 15px; color: var(--primary-color);"><i class="fas fa-plate"></i> Données de la plaque signalétique</h4>
+                
+                <!-- Power Input -->
+                <div class="input-group">
+                    <label id="power-label">Puissance mécanique nominale</label>
+                    <div class="unit-selector">
+                        <button class="unit-btn active" data-unit="kW">kW</button>
+                        <button class="unit-btn" data-unit="HP">HP</button>
+                    </div>
+                    <div class="input-with-unit">
+                        <input type="number" id="power-input" min="0" step="0.1" value="15">
+                        <div class="unit-display" id="power-unit">kW</div>
                     </div>
                 </div>
+
+                <!-- Voltage Input -->
+                <div class="input-group">
+                    <label id="voltage-label">Tension nominale (V)</label>
+                    <input type="number" id="voltage-input" min="0" value="400">
+                </div>
+
+                <!-- Power Factor Input -->
+                <div class="input-group">
+                    <label id="pf-label">Facteur de puissance (cos φ)</label>
+                    <input type="number" id="pf-input" min="0.1" max="1" step="0.01" value="0.85">
+                </div>
+
+                <!-- Efficiency Input -->
+                <div class="input-group">
+                    <label id="efficiency-label">Rendement (η)</label>
+                    <input type="number" id="efficiency-input" min="0.1" max="1" step="0.01" value="0.92">
+                </div>
+
+                <!-- Frequency Input -->
+                <div class="input-group">
+                    <label id="frequency-label">Fréquence (Hz)</label>
+                    <select id="frequency-select">
+                        <option value="50">50 Hz</option>
+                        <option value="60">60 Hz</option>
+                    </select>
+                </div>
+
+                <!-- Poles/Speed Input -->
+                <div class="input-group">
+                    <label id="poles-label">Nombre de pôles</label>
+                    <select id="poles-select">
+                        <option value="2">2 pôles (~3000 RPM)</option>
+                        <option value="4" selected>4 pôles (~1500 RPM)</option>
+                        <option value="6">6 pôles (~1000 RPM)</option>
+                        <option value="8">8 pôles (~750 RPM)</option>
+                    </select>
+                </div>
+
+                <!-- Operating Conditions -->
+                <h4 id="conditions-title" style="margin: 25px 0 15px; color: var(--primary-color);"><i class="fas fa-industry"></i> Conditions de fonctionnement</h4>
                 
-                <div class="input-container">
-                    <label for="cable-length"><i class="fas fa-ruler"></i> طول الكابل (متر)</label>
-                    <div class="unit" data-unit="m">
-                        <input type="number" id="cable-length" placeholder="مثال: 50" min="1" value="50">
+                <!-- Load Type -->
+                <div class="input-group">
+                    <label id="load-label">Type de charge</label>
+                    <select id="load-select">
+                        <option value="light" id="load-light">Légère (ventilateurs, pompes)</option>
+                        <option value="medium" selected id="load-medium">Moyenne (convoyeurs, compresseurs)</option>
+                        <option value="heavy" id="load-heavy">Lourde (broyeurs, concasseurs)</option>
+                    </select>
+                </div>
+
+                <!-- Cable Length -->
+                <div class="input-group">
+                    <label id="cable-label">Longueur du câble (m)</label>
+                    <input type="number" id="cable-length" min="0" value="50">
+                </div>
+
+                <!-- Starting Method -->
+                <div class="input-group">
+                    <label id="start-method-label">Méthode de démarrage</label>
+                    <select id="start-method">
+                        <option value="DOL" id="start-dol">DOL (Direct-On-Line)</option>
+                        <option value="star-delta" selected id="start-star">Démarrage étoile-triangle</option>
+                        <option value="soft" id="start-soft">Démarreur progressif</option>
+                        <option value="vfd" id="start-vfd">Variateur de fréquence (VFD)</option>
+                    </select>
+                </div>
+
+                <!-- Temperature -->
+                <div class="input-group">
+                    <label id="temp-label">Température ambiante (°C)</label>
+                    <input type="number" id="temperature" min="-10" max="50" value="30">
+                </div>
+
+                <!-- Power Factor Correction -->
+                <div class="input-group">
+                    <label id="pf-target-label">Facteur de puissance cible</label>
+                    <input type="number" id="pf-target" min="0.8" max="1" step="0.01" value="0.95">
+                </div>
+
+                <button class="calculate-btn" id="calculate-btn">
+                    <i class="fas fa-calculator"></i>
+                    <span id="calculate-text">Calculer les paramètres</span>
+                </button>
+            </section>
+
+            <!-- Output Section -->
+            <section class="section">
+                <div class="section-title">
+                    <i class="fas fa-chart-line"></i>
+                    <h3 id="output-title">Résultats de calcul</h3>
+                </div>
+
+                <!-- Electrical Analysis Results -->
+                <h4 id="analysis-title" style="margin-bottom: 15px; color: var(--primary-color);"><i class="fas fa-bolt"></i> Analyse électrique</h4>
+                
+                <div class="result-item">
+                    <div class="result-title">
+                        <h4 id="current-label">Courant nominal (pleine charge)</h4>
+                        <div class="result-value" id="full-load-current">27.36</div>
                     </div>
+                    <div class="result-unit">A</div>
+                    <div class="result-note" id="current-note">Courant à pleine charge basé sur la puissance nominale</div>
                 </div>
-                
-                <div class="input-container">
-                    <label for="cable-voltage"><i class="fas fa-bolt"></i> الجهد (فولت)</label>
-                    <div class="unit" data-unit="V">
-                        <input type="number" id="cable-voltage" placeholder="مثال: 400" min="1" value="400">
+
+                <div class="result-item">
+                    <div class="result-title">
+                        <h4 id="apparent-power-label">Puissance apparente</h4>
+                        <div class="result-value" id="apparent-power">18.95</div>
                     </div>
+                    <div class="result-unit">kVA</div>
                 </div>
-            </div>
-            
-            <div class="input-row">
-                <div class="input-container">
-                    <label for="cable-type"><i class="fas fa-layer-group"></i> نوع الكابل</label>
-                    <select id="cable-type">
-                        <option value="pvc">كابل PVC في الهواء</option>
-                        <option value="pvc_conduit">كابل PVC في أنبوب</option>
-                        <option value="xlpe">كابل XLPE في الهواء</option>
-                        <option value="xlpe_conduit">كابل XLPE في أنبوب</option>
-                    </select>
+
+                <div class="result-item">
+                    <div class="result-title">
+                        <h4 id="reactive-power-label">Puissance réactive</h4>
+                        <div class="result-value" id="reactive-power">9.81</div>
+                    </div>
+                    <div class="result-unit">kVAR</div>
                 </div>
+
+                <div class="result-item">
+                    <div class="result-title">
+                        <h4 id="start-current-label">Courant de démarrage</h4>
+                        <div class="result-value" id="starting-current">95.76</div>
+                    </div>
+                    <div class="result-unit">A</div>
+                    <div class="result-note" id="start-current-note">Basé sur la méthode de démarrage sélectionnée</div>
+                </div>
+
+                <!-- Component Selection Results -->
+                <h4 id="components-title" style="margin: 25px 0 15px; color: var(--primary-color);"><i class="fas fa-tools"></i> Sélection des composants</h4>
                 
-                <div class="input-container">
-                    <label for="cable-phases"><i class="fas fa-plug"></i> عدد الأطوار</label>
-                    <select id="cable-phases">
-                        <option value="1">طور واحد + ناقل</option>
-                        <option value="3" selected>3 أطوار + ناقل</option>
-                    </select>
+                <div class="result-item">
+                    <div class="result-title">
+                        <h4 id="breaker-label">Disjoncteur (Courbe D)</h4>
+                        <div class="result-value" id="breaker-size">40</div>
+                    </div>
+                    <div class="result-unit">A</div>
+                    <div class="result-note" id="breaker-note">Capacité nominale recommandée</div>
                 </div>
-                
-                <div class="input-container">
-                    <label for="cable-material"><i class="fas fa-weight"></i> مادة الموصل</label>
-                    <select id="cable-material">
-                        <option value="copper" selected>نحاس</option>
-                        <option value="aluminum">ألومنيوم</option>
-                    </select>
+
+                <div class="result-item">
+                    <div class="result-title">
+                        <h4 id="contactor-label">Contacteur (AC-3)</h4>
+                        <div class="result-value" id="contactor-size">32</div>
+                    </div>
+                    <div class="result-unit">A</div>
                 </div>
-            </div>
-            
-            <div class="highlight">
-                <h4><i class="fas fa-info-circle"></i> معلومات إضافية</h4>
-                <p>لحساب أدق، يمكنك إضافة درجة الحرارة المحيطة ونسبة هبوط الجهد المسموح به.</p>
-                <div class="input-row">
-                    <div class="input-container">
-                        <label for="voltage-drop"><i class="fas fa-arrow-down"></i> نسبة هبوط الجهد المسموح (%)</label>
-                        <div class="unit" data-unit="%">
-                            <input type="number" id="voltage-drop" placeholder="مثال: 3" min="0.1" max="10" step="0.1" value="3">
+
+                <div class="result-item">
+                    <div class="result-title">
+                        <h4 id="overload-label">Relais de surcharge</h4>
+                        <div class="result-value" id="overload-range">25 - 32</div>
+                    </div>
+                    <div class="result-unit">A</div>
+                    <div class="result-note" id="overload-note">Réglage recommandé: 1.15 × I<sub>fl</sub></div>
+                </div>
+
+                <div class="result-item">
+                    <div class="result-title">
+                        <h4 id="cable-label-output">Section du câble Cu</h4>
+                        <div class="result-value" id="cable-size">6</div>
+                    </div>
+                    <div class="result-unit">mm²</div>
+                    <div class="result-note" id="cable-note">Basé sur 50m de longueur et chute de tension &lt;3%</div>
+                </div>
+
+                <div class="result-item">
+                    <div class="result-title">
+                        <h4 id="voltage-drop-label">Chute de tension</h4>
+                        <div class="result-value" id="voltage-drop">2.14</div>
+                    </div>
+                    <div class="result-unit">%</div>
+                </div>
+
+                <div class="result-item">
+                    <div class="result-title">
+                        <h4 id="capacitor-label">Condensateur de correction</h4>
+                        <div class="result-value" id="capacitor-value">4.2</div>
+                    </div>
+                    <div class="result-unit">kVAR</div>
+                    <div class="result-note" id="capacitor-note">Pour améliorer le facteur de puissance à 0.95</div>
+                </div>
+
+                <div class="action-buttons">
+                    <button class="action-btn export-btn" id="export-btn">
+                        <i class="fas fa-file-pdf"></i>
+                        <span id="export-text">Exporter PDF</span>
+                    </button>
+                    <button class="action-btn reset-btn" id="reset-btn">
+                        <i class="fas fa-redo"></i>
+                        <span id="reset-text">Réinitialiser</span>
+                    </button>
+                </div>
+            </section>
+
+            <!-- Advanced Features Section -->
+            <section class="section features-section">
+                <div class="section-title">
+                    <i class="fas fa-star"></i>
+                    <h3 id="features-title">Fonctionnalités avancées</h3>
+                </div>
+
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <h4><i class="fas fa-exchange-alt"></i> <span id="conversion-title">Conversion d'unités</span></h4>
+                        <p id="conversion-text">Conversion automatique entre kW et HP avec un seul clic. Prend en charge les unités métriques et impériales.</p>
+                        <div style="margin-top: 15px; display: flex; gap: 10px;">
+                            <input type="number" id="conversion-input" style="flex: 1; padding: 8px;" value="15">
+                            <select id="conversion-from" style="padding: 8px;">
+                                <option value="kW">kW</option>
+                                <option value="HP">HP</option>
+                            </select>
+                            <button id="convert-btn" style="padding: 8px 15px; background-color: var(--secondary-color); color: white; border: none; border-radius: var(--border-radius); cursor: pointer;">
+                                <i class="fas fa-sync-alt"></i>
+                            </button>
+                            <div id="conversion-result" style="padding: 8px 15px; background-color: #f1f1f1; border-radius: var(--border-radius); min-width: 100px; text-align: center; font-weight: bold;">
+                                20.13 HP
+                            </div>
                         </div>
                     </div>
-                    
-                    <div class="input-container">
-                        <label for="temperature"><i class="fas fa-thermometer-half"></i> درجة الحرارة المحيطة (°C)</label>
-                        <div class="unit" data-unit="°C">
-                            <input type="number" id="temperature" placeholder="مثال: 30" min="0" max="60" value="30">
+
+                    <div class="feature-card">
+                        <h4><i class="fas fa-project-diagram"></i> <span id="connection-title">Connexion du bornier</span></h4>
+                        <p id="connection-text">Diagramme de connexion basé sur la tension et la configuration du moteur (étoile ou triangle).</p>
+                        <div class="diagram" id="connection-diagram">
+                            <div style="font-size: 1.2rem; font-weight: bold; margin-bottom: 10px;" id="diagram-title">Connexion Étoile (Y)</div>
+                            <div style="display: flex; justify-content: center; align-items: center; gap: 20px; margin: 15px 0;">
+                                <div>
+                                    <div class="motor-terminal">U1</div>
+                                    <div class="motor-terminal">V1</div>
+                                    <div class="motor-terminal">W1</div>
+                                </div>
+                                <div style="font-size: 2rem;">⟷</div>
+                                <div>
+                                    <div>L1</div>
+                                    <div>L2</div>
+                                    <div>L3</div>
+                                </div>
+                            </div>
+                            <div style="margin-top: 10px; font-size: 0.9rem; color: #666;" id="diagram-note">
+                                U2, V2, W1 connectés ensemble pour la configuration étoile
+                            </div>
                         </div>
                     </div>
                 </div>
+            </section>
+        </div>
+
+        <!-- Connection Diagram Section -->
+        <div class="diagram-container">
+            <div class="diagram-title">
+                <i class="fas fa-plug"></i>
+                <h3 id="wiring-title">Configuration de câblage recommandée</h3>
             </div>
-            
-            <button class="calculate-btn" id="calculate-cable">
-                <i class="fas fa-calculator"></i> حساب مقطع الكابل
-            </button>
-            
-            <div class="results" id="cable-results">
-                <h3><i class="fas fa-clipboard-check"></i> نتائج الحساب</h3>
-                
-                <div class="result-grid">
-                    <div class="result-card">
-                        <h4>المقطع العرضي المطلوب</h4>
-                        <div class="result-value" id="cable-cross-section">--</div>
-                    </div>
-                    
-                    <div class="result-card">
-                        <h4>التيار المسموح به</h4>
-                        <div class="result-value" id="cable-allowed-current">--<span class="result-unit">A</span></div>
-                    </div>
-                    
-                    <div class="result-card">
-                        <h4>هبوط الجهد الفعلي</h4>
-                        <div class="result-value" id="cable-actual-drop">--<span class="result-unit">%</span></div>
-                    </div>
-                    
-                    <div class="result-card">
-                        <h4>مقاومة الكابل</h4>
-                        <div class="result-value" id="cable-resistance">--<span class="result-unit">Ω</span></div>
+            <div style="display: flex; justify-content: center; gap: 30px; flex-wrap: wrap;">
+                <div style="text-align: center;">
+                    <div style="font-weight: bold; margin-bottom: 10px;" id="breaker-diagram-title">Disjoncteur</div>
+                    <div style="padding: 15px; background-color: #f9f9f9; border-radius: var(--border-radius); width: 200px;">
+                        <div style="font-size: 1.5rem; color: var(--accent-color);">40A</div>
+                        <div style="font-size: 0.9rem; color: #666;">Courbe D</div>
                     </div>
                 </div>
-                
-                <div class="recommendation" id="cable-recommendation">
-                    <h4><i class="fas fa-lightbulb"></i> التوصية</h4>
-                    <p>سيتم عرض التوصية هنا بعد الحساب...</p>
+                <div style="text-align: center;">
+                    <div style="font-weight: bold; margin-bottom: 10px;" id="contactor-diagram-title">Contacteur</div>
+                    <div style="padding: 15px; background-color: #f9f9f9; border-radius: var(--border-radius); width: 200px;">
+                        <div style="font-size: 1.5rem; color: var(--accent-color);">32A</div>
+                        <div style="font-size: 0.9rem; color: #666;">AC-3, 400V</div>
+                    </div>
                 </div>
-                
-                <div class="notes">
-                    <h4><i class="fas fa-exclamation-triangle"></i> ملاحظات هامة</h4>
-                    <ul>
-                        <li>هذه الحسابات لأغراض إرشادية ويجب مراجعة المهندس المعتمد</li>
-                        <li>يجب اختيار الكابل الأقرب للمقطع المحسوب للأعلى (عدم التقليل)</li>
-                        <li>مراعاة شروط التمديد ودرجة الحرارة المحيطة</li>
-                        <li>تطبيق عوامل تصحيح حسب ظروف التركيب</li>
-                    </ul>
-                </div>
-            </div>
-            
-            <div class="cable-table">
-                <h3><i class="fas fa-table"></i> جدول قدرة تحمل الكابلات النحاسية (مثال)</h3>
-                <div class="cable-item">
-                    <div class="cable-size">1.5 مم²</div>
-                    <div class="cable-amp">15-20 أمبير</div>
-                    <p>إضاءة ومقابس خفيفة</p>
-                </div>
-                <div class="cable-item">
-                    <div class="cable-size">2.5 مم²</div>
-                    <div class="cable-amp">20-27 أمبير</div>
-                    <p>دوائر المقابس العامة</p>
-                </div>
-                <div class="cable-item">
-                    <div class="cable-size">4 مم²</div>
-                    <div class="cable-amp">27-36 أمبير</div>
-                    <p>مكيفات صغيرة وأفران</p>
-                </div>
-                <div class="cable-item">
-                    <div class="cable-size">6 مم²</div>
-                    <div class="cable-amp">36-46 أمبير</div>
-                    <p>سخانات ماء كبيرة</p>
-                </div>
-                <div class="cable-item">
-                    <div class="cable-size">10 مم²</div>
-                    <div class="cable-amp">46-63 أمبير</div>
-                    <p>دوائر التغذية الرئيسية</p>
+                <div style="text-align: center;">
+                    <div style="font-weight: bold; margin-bottom: 10px;" id="overload-diagram-title">Relais de surcharge</div>
+                    <div style="padding: 15px; background-color: #f9f9f9; border-radius: var(--border-radius); width: 200px;">
+                        <div style="font-size: 1.5rem; color: var(--accent-color);">25-32A</div>
+                        <div style="font-size: 0.9rem; color: #666;">Réglable</div>
+                    </div>
                 </div>
             </div>
         </div>
-        
-        <!-- أداة حساب التيار والقدرة -->
-        <div id="current" class="tool-container">
-            <div class="tool-header">
-                <i class="fas fa-tachometer-alt"></i>
-                <div>
-                    <h2>حساب التيار والقدرة الكهربائية</h2>
-                    <p>تحويل بين القدرة والتيار والجهد لشبكات أحادية وثلاثية الطور</p>
-                </div>
-            </div>
-            
-            <div class="input-row">
-                <div class="input-container">
-                    <label><i class="fas fa-plug"></i> نوع النظام</label>
-                    <select id="system-type">
-                        <option value="1-phase">أحادي الطور</option>
-                        <option value="3-phase" selected>ثلاثي الطور</option>
-                    </select>
-                </div>
-                
-                <div class="input-container">
-                    <label><i class="fas fa-bolt"></i> الجهد (V)</label>
-                    <div class="unit" data-unit="V">
-                        <input type="number" id="voltage-input" placeholder="220 أو 380 أو 400" value="400">
-                    </div>
-                </div>
-                
-                <div class="input-container">
-                    <label><i class="fas fa-power-off"></i> القدرة (kW)</label>
-                    <div class="unit" data-unit="kW">
-                        <input type="number" id="power-kw" placeholder="القدرة بالكيلووات" value="15">
-                    </div>
-                </div>
-            </div>
-            
-            <div class="input-row">
-                <div class="input-container">
-                    <label><i class="fas fa-cogs"></i> معامل القدرة (PF)</label>
-                    <div class="unit" data-unit="">
-                        <input type="number" id="power-factor" placeholder="0.8 إلى 1" min="0.5" max="1" step="0.01" value="0.85">
-                    </div>
-                </div>
-                
-                <div class="input-container">
-                    <label><i class="fas fa-percentage"></i> الكفاءة (%)</label>
-                    <div class="unit" data-unit="%">
-                        <input type="number" id="efficiency" placeholder="70 إلى 98" min="50" max="100" value="90">
-                    </div>
-                </div>
-                
-                <div class="input-container">
-                    <label><i class="fas fa-tachometer-alt"></i> التيار (A)</label>
-                    <div class="unit" data-unit="A">
-                        <input type="number" id="current-input" placeholder="التيار بالأمبير">
-                    </div>
-                </div>
-            </div>
-            
-            <div class="formula-box">
-                <h4><i class="fas fa-calculator"></i> صيغ الحساب:</h4>
-                <p><strong>لنظام ثلاثي الطور:</strong> I = P × 1000 / (√3 × V × PF × η)</p>
-                <p><strong>لنظام أحادي الطور:</strong> I = P × 1000 / (V × PF × η)</p>
-                <p>حيث: I = التيار (A)، P = القدرة (kW)، V = الجهد (V)، PF = معامل القدرة، η = الكفاءة</p>
-            </div>
-            
-            <button class="calculate-btn" id="calculate-current">
-                <i class="fas fa-calculator"></i> حساب التيار والقدرة
-            </button>
-            
-            <div class="results">
-                <h3><i class="fas fa-clipboard-check"></i> النتائج</h3>
-                
-                <div class="result-grid">
-                    <div class="result-card">
-                        <h4>التيار المقنن</h4>
-                        <div class="result-value" id="rated-current">--<span class="result-unit">A</span></div>
-                    </div>
-                    
-                    <div class="result-card">
-                        <h4>القدرة الظاهرية</h4>
-                        <div class="result-value" id="apparent-power">--<span class="result-unit">kVA</span></div>
-                    </div>
-                    
-                    <div class="result-card">
-                        <h4>القدرة الفعالة</h4>
-                        <div class="result-value" id="real-power">--<span class="result-unit">kW</span></div>
-                    </div>
-                    
-                    <div class="result-card">
-                        <h4>القدرة غير الفعالة</h4>
-                        <div class="result-value" id="reactive-power">--<span class="result-unit">kVAR</span></div>
-                    </div>
-                </div>
-                
-                <div class="warning-box">
-                    <h4><i class="fas fa-exclamation-triangle"></i> ملاحظات هامة</h4>
-                    <p>التيار المحسوب هو التيار المقنن للمحرك أو الحمل. يجب ضرب هذا التيار في عامل الأمان (عادة 1.25) لاختيار القواطع والكابلات.</p>
-                </div>
-            </div>
-        </div>
-        
-        <!-- أداة قانون أوم والدوائر -->
-        <div id="ohm" class="tool-container">
-            <div class="tool-header">
-                <i class="fas fa-resistance"></i>
-                <div>
-                    <h2>قانون أوم وحساب الدوائر الكهربائية</h2>
-                    <p>حساب الجهد، التيار، المقاومة، والقدرة في الدوائر الكهربائية</p>
-                </div>
-            </div>
-            
-            <div class="input-row">
-                <div class="input-container">
-                    <label><i class="fas fa-bolt"></i> الجهد (V)</label>
-                    <div class="unit" data-unit="V">
-                        <input type="number" id="ohm-voltage" placeholder="الجهد بالفولت" value="24">
-                    </div>
-                </div>
-                
-                <div class="input-container">
-                    <label><i class="fas fa-tachometer-alt"></i> التيار (A)</label>
-                    <div class="unit" data-unit="A">
-                        <input type="number" id="ohm-current" placeholder="التيار بالأمبير" value="2">
-                    </div>
-                </div>
-                
-                <div class="input-container">
-                    <label><i class="fas fa-resistance"></i> المقاومة (Ω)</label>
-                    <div class="unit" data-unit="Ω">
-                        <input type="number" id="ohm-resistance" placeholder="المقاومة بالأوم" value="12">
-                    </div>
-                </div>
-            </div>
-            
-            <div class="input-row">
-                <div class="input-container">
-                    <label><i class="fas fa-power-off"></i> القدرة (W)</label>
-                    <div class="unit" data-unit="W">
-                        <input type="number" id="ohm-power" placeholder="القدرة بالواط" value="48">
-                    </div>
-                </div>
-                
-                <div class="input-container">
-                    <label><i class="fas fa-sitemap"></i> نوع التوصيل</label>
-                    <select id="connection-type">
-                        <option value="series">تسلسلي</option>
-                        <option value="parallel">توازي</option>
-                        <option value="single">عنصر واحد</option>
-                    </select>
-                </div>
-                
-                <div class="input-container">
-                    <label><i class="fas fa-layer-group"></i> عدد العناصر</label>
-                    <div class="unit" data-unit="">
-                        <input type="number" id="elements-count" min="1" max="10" value="3">
-                    </div>
-                </div>
-            </div>
-            
-            <div class="formula-box">
-                <h4><i class="fas fa-calculator"></i> قانون أوم:</h4>
-                <p><strong>V = I × R</strong> &nbsp;&nbsp; (الجهد = التيار × المقاومة)</p>
-                <p><strong>P = V × I</strong> &nbsp;&nbsp; (القدرة = الجهد × التيار)</p>
-                <p><strong>P = I² × R</strong> &nbsp;&nbsp; (القدرة = مربع التيار × المقاومة)</p>
-                <p><strong>P = V² / R</strong> &nbsp;&nbsp; (القدرة = مربع الجهد ÷ المقاومة)</p>
-            </div>
-            
-            <button class="calculate-btn" id="calculate-ohm">
-                <i class="fas fa-calculator"></i> تطبيق قانون أوم
-            </button>
-            
-            <div class="results">
-                <h3><i class="fas fa-clipboard-check"></i> النتائج</h3>
-                
-                <div class="result-grid">
-                    <div class="result-card">
-                        <h4>المقاومة الكلية</h4>
-                        <div class="result-value" id="total-resistance">--<span class="result-unit">Ω</span></div>
-                    </div>
-                    
-                    <div class="result-card">
-                        <h4>التيار الكلي</h4>
-                        <div class="result-value" id="total-current">--<span class="result-unit">A</span></div>
-                    </div>
-                    
-                    <div class="result-card">
-                        <h4>القدرة الكلية</h4>
-                        <div class="result-value" id="total-power">--<span class="result-unit">W</span></div>
-                    </div>
-                    
-                    <div class="result-card">
-                        <h4>هبوط الجهد</h4>
-                        <div class="result-value" id="voltage-drop-result">--<span class="result-unit">V</span></div>
-                    </div>
-                </div>
-                
-                <div class="highlight">
-                    <h4><i class="fas fa-lightbulb"></i> معلومات عن التوصيل:</h4>
-                    <p id="connection-info">...</p>
-                </div>
-            </div>
-        </div>
-        
-        <!-- أداة معامل القدرة والمكثفات -->
-        <div id="power" class="tool-container">
-            <div class="tool-header">
-                <i class="fas fa-charging-station"></i>
-                <div>
-                    <h2>تحسين معامل القدرة وحساب المكثفات</h2>
-                    <p>حساب سعة المكثفات المطلوبة لتحسين معامل القدرة وتخفيض الفاتورة</p>
-                </div>
-            </div>
-            
-            <div class="input-row">
-                <div class="input-container">
-                    <label><i class="fas fa-power-off"></i> القدرة الفعالة (kW)</label>
-                    <div class="unit" data-unit="kW">
-                        <input type="number" id="power-real" placeholder="القدرة الفعالة" value="100">
-                    </div>
-                </div>
-                
-                <div class="input-container">
-                    <label><i class="fas fa-cogs"></i> معامل القدرة الحالي</label>
-                    <div class="unit" data-unit="">
-                        <input type="number" id="pf-current" placeholder="من 0.5 إلى 1" min="0.5" max="0.95" step="0.01" value="0.75">
-                    </div>
-                </div>
-                
-                <div class="input-container">
-                    <label><i class="fas fa-cogs"></i> معامل القدرة المطلوب</label>
-                    <div class="unit" data-unit="">
-                        <input type="number" id="pf-target" placeholder="من 0.9 إلى 1" min="0.9" max="1" step="0.01" value="0.95">
-                    </div>
-                </div>
-            </div>
-            
-            <div class="input-row">
-                <div class="input-container">
-                    <label><i class="fas fa-bolt"></i> الجهد (V)</label>
-                    <div class="unit" data-unit="V">
-                        <input type="number" id="pf-voltage" placeholder="الجهد" value="400">
-                    </div>
-                </div>
-                
-                <div class="input-container">
-                    <label><i class="fas fa-plug"></i> نوع النظام</label>
-                    <select id="pf-system-type">
-                        <option value="1-phase">أحادي الطور</option>
-                        <option value="3-phase" selected>ثلاثي الطور</option>
-                    </select>
-                </div>
-                
-                <div class="input-container">
-                    <label><i class="fas fa-bolt"></i> التردد (Hz)</label>
-                    <div class="unit" data-unit="Hz">
-                        <input type="number" id="frequency" placeholder="50 أو 60" value="50">
-                    </div>
-                </div>
-            </div>
-            
-            <div class="formula-box">
-                <h4><i class="fas fa-calculator"></i> صيغة حساب سعة المكثف:</h4>
-                <p><strong>لنظام ثلاثي الطور:</strong> C = P × (tanφ₁ - tanφ₂) / (3 × 2π × f × V²)</p>
-                <p><strong>لنظام أحادي الطور:</strong> C = P × (tanφ₁ - tanφ₂) / (2π × f × V²)</p>
-                <p>حيث: C = السعة بالفاراد، P = القدرة بالواط، φ₁ = زاوية معامل القدرة الحالي، φ₂ = زاوية معامل القدرة المطلوب</p>
-            </div>
-            
-            <button class="calculate-btn" id="calculate-power-factor">
-                <i class="fas fa-calculator"></i> حساب سعة المكثف
-            </button>
-            
-            <div class="results">
-                <h3><i class="fas fa-clipboard-check"></i> النتائج</h3>
-                
-                <div class="result-grid">
-                    <div class="result-card">
-                        <h4>سعة المكثف المطلوبة</h4>
-                        <div class="result-value" id="capacitor-value">--<span class="result-unit">μF</span></div>
-                    </div>
-                    
-                    <div class="result-card">
-                        <h4>القدرة غير الفعالة الحالية</h4>
-                        <div class="result-value" id="current-reactive">--<span class="result-unit">kVAR</span></div>
-                    </div>
-                    
-                    <div class="result-card">
-                        <h4>القدرة غير الفعالة بعد التحسين</h4>
-                        <div class="result-value" id="target-reactive">--<span class="result-unit">kVAR</span></div>
-                    </div>
-                    
-                    <div class="result-card">
-                        <h4>الفرق في القدرة غير الفعالة</h4>
-                        <div class="result-value" id="reactive-difference">--<span class="result-unit">kVAR</span></div>
-                    </div>
-                </div>
-                
-                <div class="recommendation">
-                    <h4><i class="fas fa-lightbulb"></i> التوصية:</h4>
-                    <p id="pf-recommendation">...</p>
-                </div>
-                
-                <div class="notes">
-                    <h4><i class="fas fa-exclamation-triangle"></i> فوائد تحسين معامل القدرة:</h4>
-                    <ul>
-                        <li>تقليل الفاتورة الكهربائية (الجزء الخاص بالطاقة غير الفعالة)</li>
-                        <li>تحسين كفاءة الشبكة الكهربائية</li>
-                        <li>تقليل هبوط الجهد في الشبكة</li>
-                        <li>زيادة القدرة الاستيعابية للمحولات والكابلات</li>
-                        <li>تقليل الفقد في القدرة (I²R Losses)</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-        
-        <!-- أداة حساب محرك 3 فاز -->
-        <div id="motor" class="tool-container">
-            <div class="tool-header">
-                <i class="fas fa-cogs"></i>
-                <div>
-                    <h2>حساب محرك 3 فاز وتجهيزات التحكم</h2>
-                    <p>اختيار المعدات الكهربائية المناسبة للمحركات ثلاثية الطور</p>
-                </div>
-            </div>
-            
-            <div class="input-row">
-                <div class="input-container">
-                    <label><i class="fas fa-horse-head"></i> قدرة المحرك (HP)</label>
-                    <div class="unit" data-unit="HP">
-                        <input type="number" id="motor-hp" placeholder="القدرة بالحصان" value="10">
-                    </div>
-                </div>
-                
-                <div class="input-container">
-                    <label><i class="fas fa-power-off"></i> قدرة المحرك (kW)</label>
-                    <div class="unit" data-unit="kW">
-                        <input type="number" id="motor-kw" placeholder="القدرة بالكيلووات" value="7.5">
-                    </div>
-                </div>
-                
-                <div class="input-container">
-                    <label><i class="fas fa-bolt"></i> الجهد (V)</label>
-                    <div class="unit" data-unit="V">
-                        <input type="number" id="motor-voltage" placeholder="380 أو 400 أو 415" value="400">
-                    </div>
-                </div>
-            </div>
-            
-            <div class="input-row">
-                <div class="input-container">
-                    <label><i class="fas fa-tachometer-alt"></i> التيار المقنن (A)</label>
-                    <div class="unit" data-unit="A">
-                        <input type="number" id="motor-current" placeholder="التيار المقنن">
-                    </div>
-                </div>
-                
-                <div class="input-container">
-                    <label><i class="fas fa-cogs"></i> معامل القدرة</label>
-                    <div class="unit" data-unit="">
-                        <input type="number" id="motor-pf" placeholder="0.8 إلى 0.9" min="0.7" max="1" step="0.01" value="0.85">
-                    </div>
-                </div>
-                
-                <div class="input-container">
-                    <label><i class="fas fa-percentage"></i> الكفاءة (%)</label>
-                    <div class="unit" data-unit="%">
-                        <input type="number" id="motor-efficiency" placeholder="85 إلى 95" min="70" max="98" value="90">
-                    </div>
-                </div>
-            </div>
-            
-            <div class="input-row">
-                <div class="input-container">
-                    <label><i class="fas fa-play-circle"></i> طريقة البدء</label>
-                    <select id="starting-method">
-                        <option value="dol">بدء مباشر (DOL)</option>
-                        <option value="star-delta">نجمة-مثلث</option>
-                        <option value="soft">Soft Starter</option>
-                        <option value="inverter">Inverter</option>
-                    </select>
-                </div>
-                
-                <div class="input-container">
-                    <label><i class="fas fa-industry"></i> نوع الحمل</label>
-                    <select id="load-type">
-                        <option value="light">خفيف (مراوح، مضخات صغيرة)</option>
-                        <option value="medium">متوسط (مكابس، ناقلات)</option>
-                        <option value="heavy" selected>ثقيل (كسارات، مطاحن)</option>
-                    </select>
-                </div>
-                
-                <div class="input-container">
-                    <label><i class="fas fa-expand-alt"></i> عامل الأمان</label>
-                    <div class="unit" data-unit="">
-                        <input type="number" id="safety-factor" placeholder="1.1 إلى 1.5" min="1" max="2" step="0.1" value="1.25">
-                    </div>
-                </div>
-            </div>
-            
-            <button class="calculate-btn" id="calculate-motor">
-                <i class="fas fa-calculator"></i> حساب تجهيزات المحرك
-            </button>
-            
-            <div class="results">
-                <h3><i class="fas fa-clipboard-check"></i> المعدات المطلوبة</h3>
-                
-                <div class="result-grid">
-                    <div class="result-card">
-                        <h4>التيار المقنن للمحرك</h4>
-                        <div class="result-value" id="motor-rated-current">--<span class="result-unit">A</span></div>
-                    </div>
-                    
-                    <div class="result-card">
-                        <h4>قاطع الحماية المطلوب</h4>
-                        <div class="result-value" id="motor-breaker">--<span class="result-unit">A</span></div>
-                    </div>
-                    
-                    <div class="result-card">
-                        <h4>الكونتاكتور المناسب</h4>
-                        <div class="result-value" id="motor-contactor">--</div>
-                    </div>
-                    
-                    <div class="result-card">
-                        <h4>الريليه الحراري</h4>
-                        <div class="result-value" id="motor-overload">--</div>
-                    </div>
-                </div>
-                
-                <div class="result-grid">
-                    <div class="result-card">
-                        <h4>تيار البدء</h4>
-                        <div class="result-value" id="starting-current">--<span class="result-unit">A</span></div>
-                    </div>
-                    
-                    <div class="result-card">
-                        <h4>مقطع الكابل المطلوب</h4>
-                        <div class="result-value" id="motor-cable">--<span class="result-unit">mm²</span></div>
-                    </div>
-                    
-                    <div class="result-card">
-                        <h4>القدرة الظاهرية</h4>
-                        <div class="result-value" id="motor-kva">--<span class="result-unit">kVA</span></div>
-                    </div>
-                    
-                    <div class="result-card">
-                        <h4>التيار بعد الأمان</h4>
-                        <div class="result-value" id="motor-safe-current">--<span class="result-unit">A</span></div>
-                    </div>
-                </div>
-                
-                <div class="recommendation">
-                    <h4><i class="fas fa-lightbulb"></i> توصيات التركيب:</h4>
-                    <p id="motor-recommendation">...</p>
-                </div>
-            </div>
-        </div>
-        
-        <!-- باقي الأدوات ستكون بنفس الهيكل ولكن لأغراض الإيجاز قمت بتقليل حجم الكود -->
-        <!-- يمكن إضافة بقية الأدوات بنفس الطريقة -->
-        
-        <div class="footer">
-            <p>© 2023 حقيبة مهندس الكهرباء - تطبيق شامل لمهندسي الكهرباء</p>
-            <p>هذا التطبيق للأغراض التعليمية والإرشادية. يجب استشارة مهندس معتمد للتطبيقات العملية.</p>
-            <p>تم التطوير بواسطة <a href="#">فريق المهندسين الكهربائيين</a></p>
-        </div>
+
+        <footer>
+            <p id="footer-text">Outil de calcul pour ingénieurs électriciens & contrôle | Conçu avec <i class="fas fa-heart" style="color: var(--accent-color);"></i> par <span class="highlight">DeepSeek AI</span></p>
+            <p style="margin-top: 10px; font-size: 0.8rem;" id="disclaimer">Les résultats sont indicatifs. Toujours vérifier avec les normes locales et les spécifications du fabricant.</p>
+        </footer>
     </div>
-    
+
     <script>
-        // التحويل بين علامات التبويب
-        document.querySelectorAll('.tab').forEach(tab => {
-            tab.addEventListener('click', function() {
-                // إزالة النشاط من جميع علامات التبويب
-                document.querySelectorAll('.tab').forEach(t => {
-                    t.classList.remove('active');
-                });
+        // Multi-language support
+        const translations = {
+            fr: {
+                // Titles
+                "app-title": "Calculateur de Moteur Électrique",
+                "description-title": "Calculateur professionnel pour la sélection des composants de commande de moteur",
+                "description-text": "Cet outil calcule les paramètres électriques, les courants de démarrage et sélectionne les composants appropriés (disjoncteurs, contacteurs, relais de surcharge) en fonction des données de la plaque signalétique du moteur et des conditions de fonctionnement.",
+                "input-title": "Données d'entrée",
+                "output-title": "Résultats de calcul",
+                "features-title": "Fonctionnalités avancées",
+                "wiring-title": "Configuration de câblage recommandée",
                 
-                // إخفاء جميع الأدوات
-                document.querySelectorAll('.tool-container').forEach(container => {
-                    container.classList.remove('active');
-                });
+                // Input labels
+                "nameplate-title": "Données de la plaque signalétique",
+                "power-label": "Puissance mécanique nominale",
+                "voltage-label": "Tension nominale (V)",
+                "pf-label": "Facteur de puissance (cos φ)",
+                "efficiency-label": "Rendement (η)",
+                "frequency-label": "Fréquence (Hz)",
+                "poles-label": "Nombre de pôles",
+                "conditions-title": "Conditions de fonctionnement",
+                "load-label": "Type de charge",
+                "load-light": "Légère (ventilateurs, pompes)",
+                "load-medium": "Moyenne (convoyeurs, compresseurs)",
+                "load-heavy": "Lourde (broyeurs, concasseurs)",
+                "cable-label": "Longueur du câble (m)",
+                "start-method-label": "Méthode de démarrage",
+                "start-dol": "DOL (Direct-On-Line)",
+                "start-star": "Démarrage étoile-triangle",
+                "start-soft": "Démarreur progressif",
+                "start-vfd": "Variateur de fréquence (VFD)",
+                "temp-label": "Température ambiante (°C)",
+                "pf-target-label": "Facteur de puissance cible",
                 
-                // إضافة النشاط للتبويب الحالي
-                this.classList.add('active');
+                // Output labels
+                "analysis-title": "Analyse électrique",
+                "current-label": "Courant nominal (pleine charge)",
+                "current-note": "Courant à pleine charge basé sur la puissance nominale",
+                "apparent-power-label": "Puissance apparente",
+                "reactive-power-label": "Puissance réactive",
+                "start-current-label": "Courant de démarrage",
+                "start-current-note": "Basé sur la méthode de démarrage sélectionnée",
+                "components-title": "Sélection des composants",
+                "breaker-label": "Disjoncteur (Courbe D)",
+                "breaker-note": "Capacité nominale recommandée",
+                "contactor-label": "Contacteur (AC-3)",
+                "overload-label": "Relais de surcharge",
+                "overload-note": "Réglage recommandé: 1.15 × I<sub>fl</sub>",
+                "cable-label-output": "Section du câble Cu",
+                "cable-note": "Basé sur 50m de longueur et chute de tension &lt;3%",
+                "voltage-drop-label": "Chute de tension",
+                "capacitor-label": "Condensateur de correction",
+                "capacitor-note": "Pour améliorer le facteur de puissance à 0.95",
                 
-                // إظهار الأداة المحددة
-                const toolId = this.getAttribute('data-tool');
-                document.getElementById(toolId).classList.add('active');
-            });
-        });
-        
-        // ================= أداة حساب مقطع الكابل =================
-        document.getElementById('calculate-cable').addEventListener('click', calculateCable);
-        
-        function calculateCable() {
-            const current = parseFloat(document.getElementById('cable-current').value);
-            const length = parseFloat(document.getElementById('cable-length').value);
-            const voltage = parseFloat(document.getElementById('cable-voltage').value);
-            const cableType = document.getElementById('cable-type').value;
-            const phases = parseInt(document.getElementById('cable-phases').value);
-            const material = document.getElementById('cable-material').value;
-            const voltageDropAllowed = parseFloat(document.getElementById('voltage-drop').value);
-            const temperature = parseFloat(document.getElementById('temperature').value);
-            
-            if (!current || !length || !voltage) {
-                alert('الرجاء إدخال القيم الأساسية');
-                return;
+                // Features
+                "conversion-title": "Conversion d'unités",
+                "conversion-text": "Conversion automatique entre kW et HP avec un seul clic. Prend en charge les unités métriques et impériales.",
+                "connection-title": "Connexion du bornier",
+                "connection-text": "Diagramme de connexion basé sur la tension et la configuration du moteur (étoile ou triangle).",
+                "diagram-title": "Connexion Étoile (Y)",
+                "diagram-note": "U2, V2, W1 connectés ensemble pour la configuration étoile",
+                "breaker-diagram-title": "Disjoncteur",
+                "contactor-diagram-title": "Contacteur",
+                "overload-diagram-title": "Relais de surcharge",
+                
+                // Buttons
+                "calculate-text": "Calculer les paramètres",
+                "export-text": "Exporter PDF",
+                "reset-text": "Réinitialiser",
+                
+                // Footer
+                "footer-text": "Outil de calcul pour ingénieurs électriciens & contrôle | Conçu avec ♥ par DeepSeek AI",
+                "disclaimer": "Les résultats sont indicatifs. Toujours vérifier avec les normes locales et les spécifications du fabricant."
+            },
+            ar: {
+                // Titles
+                "app-title": "حاسبة المحركات الكهربائية",
+                "description-title": "آلة حاسبة احترافية لاختيار مكونات التحكم بالمحركات",
+                "description-text": "تحسب هذه الأداة المعاملات الكهربائية، وتيارات البدء، وتختار المكونات المناسبة (القواطع، الكونتاكتورات، مرحلات التحميل الزائد) بناءً على بيانات لوحة المحرك وظروف التشغيل.",
+                "input-title": "بيانات الإدخال",
+                "output-title": "نتائج الحساب",
+                "features-title": "ميزات متقدمة",
+                "wiring-title": "توصيلة التوصيل الموصى بها",
+                
+                // Input labels
+                "nameplate-title": "بيانات اللوحة الإسمية",
+                "power-label": "القدرة الميكانيكية المقننة",
+                "voltage-label": "الجهد المقنن (فولت)",
+                "pf-label": "معامل القدرة (جتا φ)",
+                "efficiency-label": "الكفاءة (η)",
+                "frequency-label": "التردد (هرتز)",
+                "poles-label": "عدد الأقطاب",
+                "conditions-title": "ظروف التشغيل",
+                "load-label": "نوع الحمل",
+                "load-light": "خفيف (مراوح، مضخات)",
+                "load-medium": "متوسط (سيور ناقلة، ضواغط)",
+                "load-heavy": "ثقيل (كسارات، طواحين)",
+                "cable-label": "طول الكابل (متر)",
+                "start-method-label": "طريقة البدء",
+                "start-dol": "بدء مباشر (DOL)",
+                "start-star": "بدء نجم-مثلث",
+                "start-soft": "بادئ لين",
+                "start-vfd": "مغير التردد (VFD)",
+                "temp-label": "درجة الحرارة المحيطة (°م)",
+                "pf-target-label": "معامل القدرة المستهدف",
+                
+                // Output labels
+                "analysis-title": "التحليل الكهربائي",
+                "current-label": "التيار المقنن (حمولة كاملة)",
+                "current-note": "تيار الحمل الكامل بناءً على القدرة المقننة",
+                "apparent-power-label": "القدرة الظاهرية",
+                "reactive-power-label": "القدرة غير الفعالة",
+                "start-current-label": "تيار البدء",
+                "start-current-note": "بناءً على طريقة البدء المختارة",
+                "components-title": "اختيار المكونات",
+                "breaker-label": "القاطع (منحنى D)",
+                "breaker-note": "السعة المقننة الموصى بها",
+                "contactor-label": "الكونتاكتور (AC-3)",
+                "overload-label": "مرحل الحماية من التحميل الزائد",
+                "overload-note": "الضبط الموصى به: 1.15 × ت.ح.ك",
+                "cable-label-output": "مقطع الكابل نحاس",
+                "cable-note": "بناءً على طول 50م وانخفاض جهد &lt;3%",
+                "voltage-drop-label": "انخفاض الجهد",
+                "capacitor-label": "مكثف تصحيح معامل القدرة",
+                "capacitor-note": "لتحسين معامل القدرة إلى 0.95",
+                
+                // Features
+                "conversion-title": "تحويل الوحدات",
+                "conversion-text": "تحويل تلقائي بين كيلوواط وحصان بنقرة واحدة. يدعم الوحدات المترية والإمبراطورية.",
+                "connection-title": "توصيلة الروزيتا",
+                "connection-text": "مخطط التوصيل بناءً على الجهد وتكوين المحرك (نجم أو مثلث).",
+                "diagram-title": "توصيلة النجمة (Y)",
+                "diagram-note": "U2, V2, W1 متصلة معًا لتكوين النجمة",
+                "breaker-diagram-title": "القاطع",
+                "contactor-diagram-title": "الكونتاكتور",
+                "overload-diagram-title": "مرحل التحميل الزائد",
+                
+                // Buttons
+                "calculate-text": "حساب المعاملات",
+                "export-text": "تصدير PDF",
+                "reset-text": "إعادة التعيين",
+                
+                // Footer
+                "footer-text": "أداة حساب لمهندسي الكهرباء والتحكم | مصمم ب♥ من DeepSeek AI",
+                "disclaimer": "النتائج استرشادية. دائمًا تحقق من المعايير المحلية ومواصفات الشركة المصنعة."
+            },
+            en: {
+                // Titles
+                "app-title": "Electric Motor Calculator",
+                "description-title": "Professional calculator for motor control component selection",
+                "description-text": "This tool calculates electrical parameters, starting currents, and selects appropriate components (breakers, contactors, overload relays) based on motor nameplate data and operating conditions.",
+                "input-title": "Input Data",
+                "output-title": "Calculation Results",
+                "features-title": "Advanced Features",
+                "wiring-title": "Recommended Wiring Configuration",
+                
+                // Input labels
+                "nameplate-title": "Nameplate Data",
+                "power-label": "Rated Mechanical Power",
+                "voltage-label": "Rated Voltage (V)",
+                "pf-label": "Power Factor (cos φ)",
+                "efficiency-label": "Efficiency (η)",
+                "frequency-label": "Frequency (Hz)",
+                "poles-label": "Number of Poles",
+                "conditions-title": "Operating Conditions",
+                "load-label": "Load Type",
+                "load-light": "Light (fans, pumps)",
+                "load-medium": "Medium (conveyors, compressors)",
+                "load-heavy": "Heavy (crushers, grinders)",
+                "cable-label": "Cable Length (m)",
+                "start-method-label": "Starting Method",
+                "start-dol": "DOL (Direct-On-Line)",
+                "start-star": "Star-Delta Start",
+                "start-soft": "Soft Starter",
+                "start-vfd": "Variable Frequency Drive (VFD)",
+                "temp-label": "Ambient Temperature (°C)",
+                "pf-target-label": "Target Power Factor",
+                
+                // Output labels
+                "analysis-title": "Electrical Analysis",
+                "current-label": "Rated Current (Full Load)",
+                "current-note": "Full load current based on rated power",
+                "apparent-power-label": "Apparent Power",
+                "reactive-power-label": "Reactive Power",
+                "start-current-label": "Starting Current",
+                "start-current-note": "Based on selected starting method",
+                "components-title": "Component Selection",
+                "breaker-label": "Circuit Breaker (Curve D)",
+                "breaker-note": "Recommended rated capacity",
+                "contactor-label": "Contactor (AC-3)",
+                "overload-label": "Overload Relay",
+                "overload-note": "Recommended setting: 1.15 × I<sub>fl</sub>",
+                "cable-label-output": "Copper Cable Size",
+                "cable-note": "Based on 50m length and voltage drop &lt;3%",
+                "voltage-drop-label": "Voltage Drop",
+                "capacitor-label": "Power Factor Correction Capacitor",
+                "capacitor-note": "To improve power factor to 0.95",
+                
+                // Features
+                "conversion-title": "Unit Conversion",
+                "conversion-text": "Automatic conversion between kW and HP with a single click. Supports metric and imperial units.",
+                "connection-title": "Terminal Connection",
+                "connection-text": "Connection diagram based on voltage and motor configuration (star or delta).",
+                "diagram-title": "Star Connection (Y)",
+                "diagram-note": "U2, V2, W1 connected together for star configuration",
+                "breaker-diagram-title": "Circuit Breaker",
+                "contactor-diagram-title": "Contactor",
+                "overload-diagram-title": "Overload Relay",
+                
+                // Buttons
+                "calculate-text": "Calculate Parameters",
+                "export-text": "Export PDF",
+                "reset-text": "Reset",
+                
+                // Footer
+                "footer-text": "Calculation tool for electrical & control engineers | Designed with ♥ by DeepSeek AI",
+                "disclaimer": "Results are indicative. Always verify with local codes and manufacturer specifications."
             }
+        };
+
+        // Current language
+        let currentLang = 'fr';
+
+        // Function to change language
+        function changeLanguage(lang) {
+            currentLang = lang;
             
-            // حساب المقطع العرضي التقريبي
-            // مقاومة النحاس: 0.0175 Ω·mm²/m عند 20°C
-            // مقاومة الألومنيوم: 0.028 Ω·mm²/m عند 20°C
-            
-            let resistivity = material === 'copper' ? 0.0175 : 0.028;
-            
-            // تصحيح المقاومة حسب درجة الحرارة
-            const tempCoefficient = material === 'copper' ? 0.00393 : 0.00403;
-            resistivity = resistivity * (1 + tempCoefficient * (temperature - 20));
-            
-            // حساب هبوط الجهد المسموح بالفولت
-            const voltageDropVolts = voltage * (voltageDropAllowed / 100);
-            
-            // حساب المقطع العرضي المطلوب بناءً على هبوط الجهد
-            let crossSection;
-            if (phases === 3) {
-                // لنظام ثلاثي الأطوار
-                crossSection = (Math.sqrt(3) * current * length * resistivity) / voltageDropVolts;
-            } else {
-                // لنظام أحادي الطور
-                crossSection = (2 * current * length * resistivity) / voltageDropVolts;
-            }
-            
-            // تقريب لأقرب مقطع قياسي
-            const standardSections = [1.5, 2.5, 4, 6, 10, 16, 25, 35, 50, 70, 95, 120, 150, 185, 240];
-            let recommendedSection = standardSections.find(section => section >= crossSection) || 240;
-            
-            // حساب التيار المسموح به لهذا المقطع
-            let allowedCurrent;
-            if (material === 'copper') {
-                if (cableType.includes('pvc')) {
-                    if (recommendedSection === 1.5) allowedCurrent = 15;
-                    else if (recommendedSection === 2.5) allowedCurrent = 21;
-                    else if (recommendedSection === 4) allowedCurrent = 28;
-                    else if (recommendedSection === 6) allowedCurrent = 36;
-                    else if (recommendedSection === 10) allowedCurrent = 50;
-                    else if (recommendedSection === 16) allowedCurrent = 68;
-                    else if (recommendedSection === 25) allowedCurrent = 89;
-                    else if (recommendedSection === 35) allowedCurrent = 110;
-                    else if (recommendedSection === 50) allowedCurrent = 134;
-                    else allowedCurrent = recommendedSection * 2.5;
-                } else { // XLPE
-                    if (recommendedSection === 1.5) allowedCurrent = 18;
-                    else if (recommendedSection === 2.5) allowedCurrent = 25;
-                    else if (recommendedSection === 4) allowedCurrent = 34;
-                    else if (recommendedSection === 6) allowedCurrent = 43;
-                    else if (recommendedSection === 10) allowedCurrent = 60;
-                    else if (recommendedSection === 16) allowedCurrent = 82;
-                    else if (recommendedSection === 25) allowedCurrent = 108;
-                    else if (recommendedSection === 35) allowedCurrent = 135;
-                    else if (recommendedSection === 50) allowedCurrent = 163;
-                    else allowedCurrent = recommendedSection * 3;
+            // Update language buttons
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                if (btn.getAttribute('data-lang') === lang) {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
                 }
-            } else { // ألومنيوم
-                allowedCurrent = recommendedSection * (cableType.includes('pvc') ? 1.5 : 2);
-            }
+            });
             
-            // حساب هبوط الجهد الفعلي
-            let actualVoltageDrop;
-            const resistance = (resistivity * length) / recommendedSection;
-            if (phases === 3) {
-                actualVoltageDrop = Math.sqrt(3) * current * resistance;
+            // Update all translatable elements
+            Object.keys(translations[lang]).forEach(key => {
+                const elements = document.querySelectorAll(`[id="${key}"]`);
+                elements.forEach(element => {
+                    if (element.tagName === 'INPUT' || element.tagName === 'OPTION') {
+                        element.textContent = translations[lang][key];
+                    } else {
+                        element.innerHTML = translations[lang][key];
+                    }
+                });
+            });
+            
+            // Update direction for Arabic
+            if (lang === 'ar') {
+                document.documentElement.dir = 'rtl';
+                document.documentElement.lang = 'ar';
             } else {
-                actualVoltageDrop = 2 * current * resistance;
+                document.documentElement.dir = 'ltr';
+                document.documentElement.lang = lang;
             }
-            const actualDropPercentage = ((actualVoltageDrop / voltage) * 100).toFixed(2);
             
-            // عرض النتائج
-            document.getElementById('cable-cross-section').textContent = recommendedSection + ' مم²';
-            document.getElementById('cable-allowed-current').innerHTML = allowedCurrent + '<span class="result-unit">A</span>';
-            document.getElementById('cable-actual-drop').innerHTML = actualDropPercentage + '<span class="result-unit">%</span>';
-            document.getElementById('cable-resistance').innerHTML = resistance.toFixed(4) + '<span class="result-unit">Ω</span>';
-            
-            // التوصية
-            let recommendation = `يوصى باستخدام كابل ${material === 'copper' ? 'نحاس' : 'ألومنيوم'} بمقطع ${recommendedSection} مم²`;
-            recommendation += ` من نوع ${cableType.includes('xlpe') ? 'XLPE' : 'PVC'}. `;
-            recommendation += `هبوط الجهد الفعلي ${actualDropPercentage}% وهو ${parseFloat(actualDropPercentage) <= voltageDropAllowed ? 'مقبول' : 'أعلى من المسموح'}.`;
-            
-            document.getElementById('cable-recommendation').innerHTML = `
-                <h4><i class="fas fa-lightbulb"></i> التوصية</h4>
-                <p>${recommendation}</p>
-            `;
+            // Recalculate to update all notes and labels
+            calculateAll();
         }
-        
-        // ================= أداة حساب التيار والقدرة =================
-        document.getElementById('calculate-current').addEventListener('click', calculateCurrent);
-        
-        function calculateCurrent() {
-            const systemType = document.getElementById('system-type').value;
+
+        // Function to calculate all parameters
+        function calculateAll() {
+            // Get input values
+            const power = parseFloat(document.getElementById('power-input').value);
+            const isPowerInKW = document.querySelector('.unit-btn.active').getAttribute('data-unit') === 'kW';
+            const powerInKW = isPowerInKW ? power : power * 0.746; // Convert HP to kW
+            
             const voltage = parseFloat(document.getElementById('voltage-input').value);
-            const powerKW = parseFloat(document.getElementById('power-kw').value);
-            const powerFactor = parseFloat(document.getElementById('power-factor').value);
-            const efficiency = parseFloat(document.getElementById('efficiency').value) / 100;
-            const currentInput = document.getElementById('current-input').value;
-            
-            let current, realPower, apparentPower, reactivePower;
-            
-            if (currentInput && !isNaN(parseFloat(currentInput))) {
-                // إذا تم إدخال التيار
-                current = parseFloat(currentInput);
-                if (systemType === '3-phase') {
-                    realPower = (Math.sqrt(3) * voltage * current * powerFactor * efficiency) / 1000;
-                } else {
-                    realPower = (voltage * current * powerFactor * efficiency) / 1000;
-                }
-            } else if (powerKW && !isNaN(powerKW)) {
-                // إذا تم إدخال القدرة
-                realPower = powerKW;
-                if (systemType === '3-phase') {
-                    current = (realPower * 1000) / (Math.sqrt(3) * voltage * powerFactor * efficiency);
-                } else {
-                    current = (realPower * 1000) / (voltage * powerFactor * efficiency);
-                }
-            } else {
-                alert('الرجاء إدخال إما القدرة أو التيار');
-                return;
-            }
-            
-            apparentPower = realPower / powerFactor;
-            reactivePower = Math.sqrt(Math.pow(apparentPower, 2) - Math.pow(realPower, 2));
-            
-            // تحديث الحقول
-            document.getElementById('rated-current').innerHTML = current.toFixed(2) + '<span class="result-unit">A</span>';
-            document.getElementById('apparent-power').innerHTML = apparentPower.toFixed(2) + '<span class="result-unit">kVA</span>';
-            document.getElementById('real-power').innerHTML = realPower.toFixed(2) + '<span class="result-unit">kW</span>';
-            document.getElementById('reactive-power').innerHTML = reactivePower.toFixed(2) + '<span class="result-unit">kVAR</span>';
-            
-            // تحديث حقل التيار إذا كان فارغاً
-            if (!currentInput) {
-                document.getElementById('current-input').value = current.toFixed(2);
-            }
-        }
-        
-        // ================= أداة قانون أوم =================
-        document.getElementById('calculate-ohm').addEventListener('click', calculateOhmLaw);
-        
-        function calculateOhmLaw() {
-            const voltage = parseFloat(document.getElementById('ohm-voltage').value);
-            const current = parseFloat(document.getElementById('ohm-current').value);
-            const resistance = parseFloat(document.getElementById('ohm-resistance').value);
-            const power = parseFloat(document.getElementById('ohm-power').value);
-            const connectionType = document.getElementById('connection-type').value;
-            const elementsCount = parseInt(document.getElementById('elements-count').value);
-            
-            let v = voltage, i = current, r = resistance, p = power;
-            
-            // حساب القيم المفقودة باستخدام قانون أوم
-            if (!isNaN(v) && !isNaN(i) && isNaN(r) && isNaN(p)) {
-                r = v / i;
-                p = v * i;
-            } else if (!isNaN(v) && isNaN(i) && !isNaN(r) && isNaN(p)) {
-                i = v / r;
-                p = v * i;
-            } else if (isNaN(v) && !isNaN(i) && !isNaN(r) && isNaN(p)) {
-                v = i * r;
-                p = v * i;
-            } else if (!isNaN(v) && isNaN(i) && isNaN(r) && !isNaN(p)) {
-                i = p / v;
-                r = v / i;
-            } else if (isNaN(v) && !isNaN(i) && isNaN(r) && !isNaN(p)) {
-                v = p / i;
-                r = v / i;
-            } else if (isNaN(v) && isNaN(i) && !isNaN(r) && !isNaN(p)) {
-                i = Math.sqrt(p / r);
-                v = i * r;
-            }
-            
-            // حساب القيم حسب نوع التوصيل
-            let totalResistance, totalCurrent, totalPower, voltageDrop;
-            let connectionInfo = '';
-            
-            if (connectionType === 'series') {
-                totalResistance = r * elementsCount;
-                totalCurrent = i;
-                totalPower = p * elementsCount;
-                voltageDrop = totalCurrent * totalResistance;
-                connectionInfo = `في التوصيل التسلسلي: المقاومة الكلية = مجموع المقاومات، التيار ثابت في جميع العناصر.`;
-            } else if (connectionType === 'parallel') {
-                totalResistance = r / elementsCount;
-                totalCurrent = i * elementsCount;
-                totalPower = p * elementsCount;
-                voltageDrop = v;
-                connectionInfo = `في التوصيل التوازي: الجهد ثابت على جميع العناصر، التيار الكلي = مجموع تيارات العناصر.`;
-            } else {
-                totalResistance = r;
-                totalCurrent = i;
-                totalPower = p;
-                voltageDrop = v;
-                connectionInfo = `عنصر واحد: الجهد = ${v.toFixed(2)}V، التيار = ${i.toFixed(2)}A، المقاومة = ${r.toFixed(2)}Ω.`;
-            }
-            
-            // تحديث الحقول
-            document.getElementById('ohm-voltage').value = v.toFixed(2);
-            document.getElementById('ohm-current').value = i.toFixed(2);
-            document.getElementById('ohm-resistance').value = r.toFixed(2);
-            document.getElementById('ohm-power').value = p.toFixed(2);
-            
-            // عرض النتائج
-            document.getElementById('total-resistance').innerHTML = totalResistance.toFixed(2) + '<span class="result-unit">Ω</span>';
-            document.getElementById('total-current').innerHTML = totalCurrent.toFixed(2) + '<span class="result-unit">A</span>';
-            document.getElementById('total-power').innerHTML = totalPower.toFixed(2) + '<span class="result-unit">W</span>';
-            document.getElementById('voltage-drop-result').innerHTML = voltageDrop.toFixed(2) + '<span class="result-unit">V</span>';
-            document.getElementById('connection-info').textContent = connectionInfo;
-        }
-        
-        // ================= أداة معامل القدرة =================
-        document.getElementById('calculate-power-factor').addEventListener('click', calculatePowerFactor);
-        
-        function calculatePowerFactor() {
-            const realPower = parseFloat(document.getElementById('power-real').value) * 1000; // تحويل إلى واط
-            const pfCurrent = parseFloat(document.getElementById('pf-current').value);
+            const powerFactor = parseFloat(document.getElementById('pf-input').value);
+            const efficiency = parseFloat(document.getElementById('efficiency-input').value);
+            const frequency = parseInt(document.getElementById('frequency-select').value);
+            const poles = parseInt(document.getElementById('poles-select').value);
+            const cableLength = parseFloat(document.getElementById('cable-length').value);
+            const startMethod = document.getElementById('start-method').value;
             const pfTarget = parseFloat(document.getElementById('pf-target').value);
-            const voltage = parseFloat(document.getElementById('pf-voltage').value);
-            const systemType = document.getElementById('pf-system-type').value;
-            const frequency = parseFloat(document.getElementById('frequency').value);
             
-            // حساب الزوايا
-            const phi1 = Math.acos(pfCurrent);
-            const phi2 = Math.acos(pfTarget);
+            // Calculate full load current for 3-phase motor
+            // I = P / (√3 * V * cosφ * η)
+            const fullLoadCurrent = (powerInKW * 1000) / (Math.sqrt(3) * voltage * powerFactor * efficiency);
             
-            // حساب القدرة غير الفعالة الحالية والمستهدفة
-            const apparentPower = realPower / pfCurrent;
-            const currentReactive = apparentPower * Math.sin(phi1);
-            const targetReactive = realPower * Math.tan(phi2);
-            const reactiveDifference = currentReactive - targetReactive;
+            // Calculate apparent power
+            const apparentPower = (powerInKW * 1000) / (efficiency * powerFactor) / 1000; // in kVA
             
-            // حساب سعة المكثف
-            let capacitorValue;
-            if (systemType === '3-phase') {
-                capacitorValue = (realPower * (Math.tan(phi1) - Math.tan(phi2))) / (3 * 2 * Math.PI * frequency * Math.pow(voltage, 2));
-            } else {
-                capacitorValue = (realPower * (Math.tan(phi1) - Math.tan(phi2))) / (2 * Math.PI * frequency * Math.pow(voltage, 2));
+            // Calculate reactive power
+            const reactivePower = apparentPower * Math.sqrt(1 - Math.pow(powerFactor, 2));
+            
+            // Calculate starting current based on method
+            let startingCurrentMultiplier;
+            switch(startMethod) {
+                case 'DOL': startingCurrentMultiplier = 6; break;
+                case 'star-delta': startingCurrentMultiplier = 2.5; break;
+                case 'soft': startingCurrentMultiplier = 3; break;
+                case 'vfd': startingCurrentMultiplier = 1.5; break;
+                default: startingCurrentMultiplier = 6;
             }
+            const startingCurrent = fullLoadCurrent * startingCurrentMultiplier;
             
-            // تحويل إلى ميكروفاراد
-            capacitorValue = capacitorValue * 1000000;
+            // Calculate component sizes
+            const breakerSize = Math.ceil(fullLoadCurrent * 1.25 / 10) * 10; // Round up to nearest 10A
+            const contactorSize = Math.ceil(fullLoadCurrent / 10) * 10; // Round up to nearest 10A
+            const overloadMin = Math.round(fullLoadCurrent * 1.1);
+            const overloadMax = Math.round(fullLoadCurrent * 1.25);
             
-            // عرض النتائج
-            document.getElementById('capacitor-value').innerHTML = capacitorValue.toFixed(2) + '<span class="result-unit">μF</span>';
-            document.getElementById('current-reactive').innerHTML = (currentReactive / 1000).toFixed(2) + '<span class="result-unit">kVAR</span>';
-            document.getElementById('target-reactive').innerHTML = (targetReactive / 1000).toFixed(2) + '<span class="result-unit">kVAR</span>';
-            document.getElementById('reactive-difference').innerHTML = (reactiveDifference / 1000).toFixed(2) + '<span class="result-unit">kVAR</span>';
+            // Calculate cable size based on current and length
+            let cableSize;
+            if (fullLoadCurrent <= 20) cableSize = 2.5;
+            else if (fullLoadCurrent <= 30) cableSize = 4;
+            else if (fullLoadCurrent <= 40) cableSize = 6;
+            else if (fullLoadCurrent <= 55) cableSize = 10;
+            else if (fullLoadCurrent <= 75) cableSize = 16;
+            else cableSize = 25;
             
-            // التوصية
-            let recommendation = `لتحسين معامل القدرة من ${pfCurrent} إلى ${pfTarget}، تحتاج إلى إضافة مكثف سعته ${capacitorValue.toFixed(2)} μF. `;
-            recommendation += `هذا سيقلل القدرة غير الفعالة بمقدار ${(reactiveDifference / 1000).toFixed(2)} kVAR.`;
+            // Calculate voltage drop (simplified)
+            const voltageDropPercent = (fullLoadCurrent * cableLength * 0.0175 * 1.732 * 100) / (cableSize * voltage);
             
-            if (systemType === '3-phase') {
-                recommendation += ` يوصى بتوزيع المكثفات على الثلاثة أطوار.`;
-            }
+            // Calculate capacitor value for power factor correction
+            const Qc = powerInKW * (Math.tan(Math.acos(powerFactor)) - Math.tan(Math.acos(pfTarget)));
             
-            document.getElementById('pf-recommendation').textContent = recommendation;
+            // Update results in the UI
+            document.getElementById('full-load-current').textContent = fullLoadCurrent.toFixed(2);
+            document.getElementById('apparent-power').textContent = apparentPower.toFixed(2);
+            document.getElementById('reactive-power').textContent = reactivePower.toFixed(2);
+            document.getElementById('starting-current').textContent = startingCurrent.toFixed(2);
+            document.getElementById('breaker-size').textContent = breakerSize;
+            document.getElementById('contactor-size').textContent = contactorSize;
+            document.getElementById('overload-range').textContent = `${overloadMin} - ${overloadMax}`;
+            document.getElementById('cable-size').textContent = cableSize;
+            document.getElementById('voltage-drop').textContent = voltageDropPercent.toFixed(2);
+            document.getElementById('capacitor-value').textContent = Qc.toFixed(2);
+            
+            // Update unit conversion
+            updateUnitConversion();
+            
+            // Update connection diagram based on voltage
+            updateConnectionDiagram(voltage);
         }
-        
-        // ================= أداة المحرك ثلاثي الطور =================
-        document.getElementById('calculate-motor').addEventListener('click', calculateMotor);
-        
-        function calculateMotor() {
-            // الحصول على القيم
-            const motorHP = parseFloat(document.getElementById('motor-hp').value);
-            const motorKW = parseFloat(document.getElementById('motor-kw').value);
-            const voltage = parseFloat(document.getElementById('motor-voltage').value);
-            const motorCurrentInput = document.getElementById('motor-current').value;
-            const powerFactor = parseFloat(document.getElementById('motor-pf').value);
-            const efficiency = parseFloat(document.getElementById('motor-efficiency').value) / 100;
-            const startingMethod = document.getElementById('starting-method').value;
-            const loadType = document.getElementById('load-type').value;
-            const safetyFactor = parseFloat(document.getElementById('safety-factor').value);
+
+        // Function to update unit conversion
+        function updateUnitConversion() {
+            const power = parseFloat(document.getElementById('power-input').value);
+            const isPowerInKW = document.querySelector('.unit-btn.active').getAttribute('data-unit') === 'kW';
             
-            // استخدام القدرة بالحصان أو الكيلووات
-            let realPower;
-            if (motorKW && !isNaN(motorKW)) {
-                realPower = motorKW;
-                document.getElementById('motor-hp').value = (motorKW * 1.341).toFixed(2);
-            } else if (motorHP && !isNaN(motorHP)) {
-                realPower = motorHP / 1.341;
-                document.getElementById('motor-kw').value = (motorHP / 1.341).toFixed(2);
+            let fromUnit = document.getElementById('conversion-from').value;
+            let value = parseFloat(document.getElementById('conversion-input').value);
+            
+            let result;
+            if (fromUnit === 'kW') {
+                result = value * 1.34102; // kW to HP
+                document.getElementById('conversion-result').textContent = `${result.toFixed(2)} HP`;
             } else {
-                alert('الرجاء إدخال قدرة المحرك');
-                return;
-            }
-            
-            // حساب التيار المقنن
-            let ratedCurrent;
-            if (motorCurrentInput && !isNaN(parseFloat(motorCurrentInput))) {
-                ratedCurrent = parseFloat(motorCurrentInput);
-            } else {
-                ratedCurrent = (realPower * 1000) / (Math.sqrt(3) * voltage * powerFactor * efficiency);
-            }
-            
-            // حساب القدرة الظاهرية
-            const apparentPower = realPower / powerFactor;
-            
-            // حساب تيار البدء حسب طريقة البدء
-            let startingCurrent;
-            switch(startingMethod) {
-                case 'dol':
-                    startingCurrent = ratedCurrent * 6; // 6 أضعاف التيار المقنن
-                    break;
-                case 'star-delta':
-                    startingCurrent = ratedCurrent * 3; // 3 أضعاف
-                    break;
-                case 'soft':
-                    startingCurrent = ratedCurrent * 2; // 2 ضعف
-                    break;
-                case 'inverter':
-                    startingCurrent = ratedCurrent * 1.5; // 1.5 ضعف
-                    break;
-            }
-            
-            // حساب التيار بعد عامل الأمان
-            const safeCurrent = ratedCurrent * safetyFactor;
-            
-            // اختيار القاطع
-            const standardBreakers = [10, 16, 20, 25, 32, 40, 50, 63, 80, 100, 125, 160, 200, 250];
-            let breakerSize = standardBreakers.find(breaker => breaker >= safeCurrent) || 250;
-            
-            // اختيار الكونتاكتور حسب التيار
-            let contactor;
-            if (ratedCurrent <= 9) contactor = "LC1D09";
-            else if (ratedCurrent <= 12) contactor = "LC1D12";
-            else if (ratedCurrent <= 18) contactor = "LC1D18";
-            else if (ratedCurrent <= 25) contactor = "LC1D25";
-            else if (ratedCurrent <= 32) contactor = "LC1D32";
-            else if (ratedCurrent <= 40) contactor = "LC1D40";
-            else if (ratedCurrent <= 50) contactor = "LC1D50";
-            else if (ratedCurrent <= 65) contactor = "LC1D65";
-            else if (ratedCurrent <= 80) contactor = "LC1D80";
-            else if (ratedCurrent <= 95) contactor = "LC1D95";
-            else contactor = "LC1D115";
-            
-            // اختيار الريليه الحراري
-            let overloadRelay;
-            const overloadRange = Math.ceil(ratedCurrent * 1.05);
-            if (overloadRange <= 13) overloadRelay = "LRD08";
-            else if (overloadRange <= 18) overloadRelay = "LRD14";
-            else if (overloadRange <= 25) overloadRelay = "LRD21";
-            else if (overloadRange <= 32) overloadRelay = "LRD28";
-            else if (overloadRange <= 40) overloadRelay = "LRD35";
-            else if (overloadRange <= 57) overloadRelay = "LRD52";
-            else if (overloadRange <= 80) overloadRelay = "LRD70";
-            else if (overloadRange <= 104) overloadRelay = "LRD93";
-            else overloadRelay = "LRD130";
-            
-            // اختيار مقطع الكابل
-            const cableSections = [1.5, 2.5, 4, 6, 10, 16, 25, 35, 50, 70, 95];
-            let cableSize = cableSections.find(section => {
-                // تقدير سعة حمل الكابل (تقريباً 5A لكل 1mm² للنحاس)
-                return section * 5 >= safeCurrent;
-            }) || 95;
-            
-            // عرض النتائج
-            document.getElementById('motor-rated-current').innerHTML = ratedCurrent.toFixed(2) + '<span class="result-unit">A</span>';
-            document.getElementById('motor-breaker').innerHTML = breakerSize + '<span class="result-unit">A</span>';
-            document.getElementById('motor-contactor').textContent = contactor;
-            document.getElementById('motor-overload').textContent = overloadRelay;
-            document.getElementById('starting-current').innerHTML = startingCurrent.toFixed(2) + '<span class="result-unit">A</span>';
-            document.getElementById('motor-cable').innerHTML = cableSize + '<span class="result-unit">mm²</span>';
-            document.getElementById('motor-kva').innerHTML = apparentPower.toFixed(2) + '<span class="result-unit">kVA</span>';
-            document.getElementById('motor-safe-current').innerHTML = safeCurrent.toFixed(2) + '<span class="result-unit">A</span>';
-            
-            // التوصية
-            let recommendation = `لمحرك ${realPower.toFixed(2)} kW (${motorHP.toFixed(2)} HP)، يوصى بـ:`;
-            recommendation += `<ul style="margin-right: 20px; margin-top: 10px;">`;
-            recommendation += `<li>قاطع تيار ${breakerSize}A</li>`;
-            recommendation += `<li>كونتاكتور ${contactor}</li>`;
-            recommendation += `<li>ريليه حراري ${overloadRelay} (ضبط على ${ratedCurrent.toFixed(2)}A)</li>`;
-            recommendation += `<li>كابل نحاس ${cableSize}mm²</li>`;
-            recommendation += `<li>طريقة بدء: ${getStartingMethodName(startingMethod)}</li>`;
-            recommendation += `</ul>`;
-            
-            document.getElementById('motor-recommendation').innerHTML = recommendation;
-        }
-        
-        function getStartingMethodName(method) {
-            switch(method) {
-                case 'dol': return 'بدء مباشر (DOL)';
-                case 'star-delta': return 'نجمة-مثلث';
-                case 'soft': return 'Soft Starter';
-                case 'inverter': return 'Inverter';
-                default: return method;
+                result = value * 0.7457; // HP to kW
+                document.getElementById('conversion-result').textContent = `${result.toFixed(2)} kW`;
             }
         }
-        
-        // إضافة التنقل بين الحقول باستخدام Enter
-        document.querySelectorAll('input').forEach(input => {
-            input.addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') {
-                    e.preventDefault();
-                    const form = this.closest('.tool-container');
-                    const calculateBtn = form.querySelector('.calculate-btn');
-                    if (calculateBtn) calculateBtn.click();
-                }
+
+        // Function to update connection diagram
+        function updateConnectionDiagram(voltage) {
+            const diagramTitle = document.getElementById('diagram-title');
+            const diagramNote = document.getElementById('diagram-note');
+            
+            if (voltage >= 400) {
+                // High voltage -> Star connection
+                diagramTitle.textContent = currentLang === 'fr' ? 'Connexion Étoile (Y)' : 
+                                          currentLang === 'ar' ? 'توصيلة النجمة (Y)' : 
+                                          'Star Connection (Y)';
+                diagramNote.textContent = currentLang === 'fr' ? 'U2, V2, W1 connectés ensemble pour la configuration étoile' :
+                                         currentLang === 'ar' ? 'U2, V2, W1 متصلة معًا لتكوين النجمة' :
+                                         'U2, V2, W1 connected together for star configuration';
+            } else {
+                // Low voltage -> Delta connection
+                diagramTitle.textContent = currentLang === 'fr' ? 'Connexion Triangle (Δ)' : 
+                                          currentLang === 'ar' ? 'توصيلة المثلث (Δ)' : 
+                                          'Delta Connection (Δ)';
+                diagramNote.textContent = currentLang === 'fr' ? 'U1-W2, V1-U2, W1-V2 connectés pour la configuration triangle' :
+                                         currentLang === 'ar' ? 'U1-W2, V1-U2, W1-V2 متصلة لتكوين المثلث' :
+                                         'U1-W2, V1-U2, W1-V2 connected for delta configuration';
+            }
+        }
+
+        // Event listeners for language buttons
+        document.querySelectorAll('.lang-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const lang = btn.getAttribute('data-lang');
+                changeLanguage(lang);
             });
         });
+
+        // Event listener for unit buttons
+        document.querySelectorAll('.unit-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.unit-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                
+                const unit = btn.getAttribute('data-unit');
+                document.getElementById('power-unit').textContent = unit;
+                
+                // Convert value if needed
+                const powerInput = document.getElementById('power-input');
+                const currentValue = parseFloat(powerInput.value);
+                
+                if (unit === 'kW' && btn.getAttribute('data-converted') === 'true') {
+                    // Convert from HP to kW
+                    powerInput.value = (currentValue * 0.746).toFixed(2);
+                    btn.removeAttribute('data-converted');
+                } else if (unit === 'HP' && !btn.hasAttribute('data-converted')) {
+                    // Convert from kW to HP
+                    powerInput.value = (currentValue / 0.746).toFixed(2);
+                    btn.setAttribute('data-converted', 'true');
+                }
+                
+                calculateAll();
+            });
+        });
+
+        // Event listener for calculate button
+        document.getElementById('calculate-btn').addEventListener('click', calculateAll);
+
+        // Event listener for reset button
+        document.getElementById('reset-btn').addEventListener('click', () => {
+            // Reset all inputs to default values
+            document.getElementById('power-input').value = 15;
+            document.querySelector('.unit-btn[data-unit="kW"]').click();
+            document.getElementById('voltage-input').value = 400;
+            document.getElementById('pf-input').value = 0.85;
+            document.getElementById('efficiency-input').value = 0.92;
+            document.getElementById('frequency-select').value = 50;
+            document.getElementById('poles-select').value = 4;
+            document.getElementById('load-select').value = 'medium';
+            document.getElementById('cable-length').value = 50;
+            document.getElementById('start-method').value = 'star-delta';
+            document.getElementById('temperature').value = 30;
+            document.getElementById('pf-target').value = 0.95;
+            
+            // Recalculate
+            calculateAll();
+        });
+
+        // Event listener for export button (simulated)
+        document.getElementById('export-btn').addEventListener('click', () => {
+            alert(currentLang === 'fr' ? 'Fonction d\'exportation PDF simulée. Dans une application réelle, cela générerait un rapport PDF.' :
+                  currentLang === 'ar' ? 'وظيفة تصدير PDF محاكاة. في التطبيق الفعلي، سيتم إنشاء تقرير PDF.' :
+                  'PDF export function simulated. In a real app, this would generate a PDF report.');
+        });
+
+        // Event listener for convert button
+        document.getElementById('convert-btn').addEventListener('click', updateUnitConversion);
+        document.getElementById('conversion-from').addEventListener('change', updateUnitConversion);
+        document.getElementById('conversion-input').addEventListener('input', updateUnitConversion);
+
+        // Event listeners for input changes to auto-recalculate
+        const inputsToWatch = [
+            'power-input', 'voltage-input', 'pf-input', 'efficiency-input',
+            'frequency-select', 'poles-select', 'load-select', 'cable-length',
+            'start-method', 'temperature', 'pf-target'
+        ];
         
-        // حساب أولي عند تحميل الصفحة
-        window.addEventListener('DOMContentLoaded', function() {
-            calculateCable();
-            calculateCurrent();
-            calculateOhmLaw();
-            calculatePowerFactor();
-            calculateMotor();
+        inputsToWatch.forEach(id => {
+            document.getElementById(id).addEventListener('change', calculateAll);
+            document.getElementById(id).addEventListener('input', calculateAll);
+        });
+
+        // Initialize the application
+        document.addEventListener('DOMContentLoaded', () => {
+            calculateAll();
+            updateUnitConversion();
         });
     </script>
 </body>
